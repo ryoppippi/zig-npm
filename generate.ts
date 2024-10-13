@@ -1,12 +1,14 @@
 import {
-  chmodSync,
-  existsSync,
-  mkdirSync,
-  rename,
-  renameSync,
-  rmSync,
-} from "fs";
-import { basename, dirname, extname, join } from "path";
+    chmodSync,
+    existsSync,
+    mkdirSync, renameSync,
+    rmSync
+} from "node:fs";
+import process from "node:process";
+import { basename, dirname, extname, join } from "node:path";
+import { $ } from "bun";
+
+$.cwd(process.cwd());
 
 const DRY_RUN = process.argv.includes("--dry-run");
 const PROVANCE = process.argv.includes("--provance");
@@ -42,36 +44,15 @@ class Download {
   ) {}
 
   async extractTarGz() {
-    const { exited } = Bun.spawn({
-      cmd: ["tar", "-xzf", basename(this.url)],
-      cwd: process.cwd(),
-      stderr: "inherit",
-      stdin: "inherit",
-      stdout: "ignore",
-    });
-    await exited;
+    await $`tar -xzf ${basename(this.url)}`.quiet();
   }
 
   async extractTarXz() {
-    const { exited } = Bun.spawn({
-      cmd: ["tar", "-xJf", basename(this.url)],
-      cwd: process.cwd(),
-      stderr: "inherit",
-      stdin: "inherit",
-      stdout: "ignore",
-    });
-    await exited;
+    await $`tar -xJf ${basename(this.url)}`.quiet();
   }
 
   async extractZip() {
-    const { exited } = Bun.spawn({
-      cmd: ["unzip", basename(this.url)],
-      cwd: process.cwd(),
-      stderr: "ignore",
-      stdin: "inherit",
-      stdout: "ignore",
-    });
-    await exited;
+    await $`unzip ${basename(this.url)}`.quiet();
   }
 
   get fileName() {
@@ -229,38 +210,9 @@ for (let downloaded of all) {
 }
 
 for (let downloaded of all) {
-  const { exited } = Bun.spawn({
-    cmd: [
-      "npm",
-      "publish",
-      "--access",
-      "public",
-      DRY_RUN ? "--dry-run" : "",
-      PROVANCE ? "--provenance" : "",
-    ].filter((a) => a.length > 0),
-    cwd: downloaded.packageName,
-    stderr: "inherit",
-    stdin: "inherit",
-    stdout: "inherit",
-  });
-  await exited;
+  await $`npm publish --access public ${DRY_RUN ? "--dry-run" : ""} ${PROVANCE ? "--provenance" : ""}`.cwd(downloaded.packageName);
 }
-{
-  const { exited } = Bun.spawn({
-    cmd: [
-      "npm",
-      "publish",
-      "--access",
-      "public",
-      DRY_RUN ? "--dry-run" : "",
-      PROVANCE ? "--provenance" : "",
-    ].filter((a) => a.length > 0),
-    cwd: "@ryoppippi/zig",
-    stderr: "inherit",
-    stdin: "inherit",
-    stdout: "inherit",
-  });
-  await exited;
-}
+
+await $`npm publish --access public ${DRY_RUN ? "--dry-run" : ""} ${PROVANCE ? "--provenance" : ""}`.cwd("@ryoppippi/zig");
 
 export {};
