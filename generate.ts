@@ -9,6 +9,7 @@ import {
 import { basename, dirname, extname, join } from "path";
 
 const DRY_RUN = process.argv.includes("--dry-run");
+const PROVANCE = process.argv.includes("--provance");
 
 const SOURCES_URL =
   process.env.SOURCES_URL ||
@@ -235,6 +236,7 @@ for (let downloaded of all) {
       "--access",
       "public",
       DRY_RUN ? "--dry-run" : "",
+      PROVANCE ? "--provenance" : "",
     ].filter((a) => a.length > 0),
     cwd: downloaded.packageName,
     stderr: "inherit",
@@ -251,6 +253,7 @@ for (let downloaded of all) {
       "--access",
       "public",
       DRY_RUN ? "--dry-run" : "",
+      PROVANCE ? "--provenance" : "",
     ].filter((a) => a.length > 0),
     cwd: "@ryoppippi/zig",
     stderr: "inherit",
