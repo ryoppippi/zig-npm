@@ -17,10 +17,10 @@ const SOURCES_URL =
 const response = await fetch(SOURCES_URL);
 
 try {
-  rmSync("@oven", { recursive: true, force: true });
+  rmSync("@ryoppippi", { recursive: true, force: true });
 } catch {}
 try {
-  mkdirSync("@oven", { recursive: true });
+  mkdirSync("@ryoppippi", { recursive: true });
 } catch {}
 
 const sources: any = await response.json();
@@ -133,7 +133,7 @@ class Download {
       url: "",
     };
     this.packageName =
-      packageJSON.name = `@oven/zig-${packageJSON.os[0]}-${packageJSON.cpu[0]}`;
+      packageJSON.name = `@ryoppippi/zig-${packageJSON.os[0]}-${packageJSON.cpu[0]}`;
     packageJSON.description = "Zig compiler for " + this.arch + "-" + this.os;
     packageJSON.url = this.url;
 
@@ -193,33 +193,33 @@ for (let key in latest) {
 const all = await Promise.all(tasks);
 
 const rootPackage = {
-  name: "@oven/zig",
+  name: "@ryoppippi/zig",
   version: all[0].version,
   description: "Zig compiler for all platforms",
   optionalDependencies: Object.fromEntries(
     all.map((download) => [download.packageName, download.version])
   ),
-  repository: "https://github.com/oven-sh/zig-npm",
+  repository: "https://github.com/ryoppippi/zig-npm",
   bin: {
     zig: "zig",
   },
 };
 
 try {
-  rmSync("@oven/zig", { recursive: true, force: true });
+  rmSync("@ryoppippi/zig", { recursive: true, force: true });
 } catch (e) {}
 
 try {
-  mkdirSync("@oven/zig", { recursive: true });
+  mkdirSync("@ryoppippi/zig", { recursive: true });
 } catch (e) {}
 
 try {
-  await Bun.write("@oven/zig/zig", Bun.file("./zig.sh"));
+  await Bun.write("@ryoppippi/zig/zig", Bun.file("./zig.sh"));
 } catch (e) {}
 
-chmodSync("@oven/zig/zig", 0o777);
+chmodSync("@ryoppippi/zig/zig", 0o777);
 
-await Bun.write("@oven/zig/package.json", JSON.stringify(rootPackage, null, 2));
+await Bun.write("@ryoppippi/zig/package.json", JSON.stringify(rootPackage, null, 2));
 
 for (let downloaded of all) {
   if (!existsSync(downloaded.packageName)) {
@@ -252,7 +252,7 @@ for (let downloaded of all) {
       "public",
       DRY_RUN ? "--dry-run" : "",
     ].filter((a) => a.length > 0),
-    cwd: "@oven/zig",
+    cwd: "@ryoppippi/zig",
     stderr: "inherit",
     stdin: "inherit",
     stdout: "inherit",
