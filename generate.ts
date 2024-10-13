@@ -27,8 +27,8 @@ try {
 const sources: any = await response.json();
 
 const zigVersion = process.env.ZIG_VERSION || "latest";
-const latest = sources?.master?.[zigVersion] ?? null;
-if (!latest) {
+const latest = sources?.master?.[zigVersion] ?? sources?.[zigVersion] ?? undefined;
+if (latest == null) {
   throw new Error(`zig version: "${zigVersion}" not found in ${SOURCES_URL}`);
 }
 
