@@ -2,6 +2,8 @@ name: release
 
 env:
   NODE_VERSION: lts/*
+  BUN_VERSION: latest
+  NPM_REGISTRY: https://registry.npmjs.org
 
 on:
   schedule:
@@ -32,8 +34,15 @@ jobs:
         with:
           fetch-depth: 0
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: ${{ env.NPM_REGISTRY }}
       - run: bun generate --provenance
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_CONFIG_PROVENANCE: true
           ZIG_VERSION: ${{ github.event.inputs.version }}
 
