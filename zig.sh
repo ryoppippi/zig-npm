@@ -21,11 +21,11 @@ if [[ $(uname) == "Darwin" ]]; then
 
     if [[ $(uname -m) == "arm64" ]]; then
 
-        $parent_dir/node_modules/@oven/zig-darwin-arm64/zig "$@"
+        $parent_dir/node_modules/@ryoppippi/zig-darwin-arm64/zig "$@"
 
     else
 
-        $parent_dir/node_modules/@oven/zig-darwin-x64/zig "$@"
+        $parent_dir/node_modules/@ryoppippi/zig-darwin-x64/zig "$@"
 
     fi
 
@@ -48,10 +48,10 @@ elif [[ $(uname) == "Linux" ]]; then
 
     if [[ $(uname -m) == "aarch64" ]]; then
 
-        $parent_dir/node_modules/@oven/zig-linux-arm64/zig "$@"
+        $parent_dir/node_modules/@ryoppippi/zig-linux-arm64/zig "$@"
     else
 
-        $parent_dir/node_modules/@oven/zig-linux-x64/zig "$@"
+        $parent_dir/node_modules/@ryoppippi/zig-linux-x64/zig "$@"
 
     fi
 
@@ -59,11 +59,11 @@ elif [[ $(uname) == "Windows" ]]; then
 
     if [[ $(uname -m) == "x86_64" ]]; then
 
-        $parent_dir/node_modules/@oven/zig-win32-x64/zig.exe "$@"
+        $parent_dir/node_modules/@ryoppippi/zig-win32-x64/zig.exe "$@"
 
     else
 
-        $parent_dir/node_modules/@oven/zig-win32-x86/zig.exe "$@"
+        $parent_dir/node_modules/@ryoppippi/zig-win32-x86/zig.exe "$@"
 
     fi
 

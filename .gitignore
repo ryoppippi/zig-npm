@@ -168,7 +168,7 @@ dist
 .yarn/install-state.gz
 .pnp.\*
 
-@oven
+@ryoppippi
 *.tar.xz
 *.tar.gz
 *.tar.bz2
