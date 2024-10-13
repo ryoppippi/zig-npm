@@ -13,6 +13,8 @@ $.cwd(process.cwd());
 const DRY_RUN = process.argv.includes("--dry-run");
 const PROVANCE = process.argv.includes("--provance");
 
+const REPOSITORY = process.env.REPOSITORY || "https://github.com/ryoppippi/zig-npm";
+
 const SOURCES_URL =
   process.env.SOURCES_URL ||
   "https://cdn.jsdelivr.net/gh/mitchellh/zig-overlay@main/sources.json";
@@ -112,12 +114,16 @@ class Download {
         }[this.arch],
       ],
       name: "",
-      url: "",
+      repository: {
+        type: "git",
+        url: REPOSITORY,
+      },
+      homepage: "",
     };
     this.packageName =
       packageJSON.name = `@ryoppippi/zig-${packageJSON.os[0]}-${packageJSON.cpu[0]}`;
     packageJSON.description = "Zig compiler for " + this.arch + "-" + this.os;
-    packageJSON.url = this.url;
+    packageJSON.homepage = this.url;
 
     const packageJSONPath = join(this.folder, "package.json");
     await Bun.write(packageJSONPath, JSON.stringify(packageJSON, null, 2));
@@ -181,7 +187,10 @@ const rootPackage = {
   optionalDependencies: Object.fromEntries(
     all.map((download) => [download.packageName, download.version])
   ),
-  repository: "https://github.com/ryoppippi/zig-npm",
+  repository: {
+    type: "git",
+    url: REPOSITORY,
+  },
   bin: {
     zig: "zig",
   },
