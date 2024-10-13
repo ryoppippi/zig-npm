@@ -9,6 +9,11 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release"
+        required: true
+        default: "latest"
 
 permissions:
   contents: write
@@ -29,4 +34,5 @@ jobs:
       - run: bun generate --provenance
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          ZIG_VERSION: ${{ github.event.inputs.version }}
 
