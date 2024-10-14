@@ -17,7 +17,7 @@ const REPOSITORY = process.env.REPOSITORY || "https://github.com/ryoppippi/zig-n
 
 const SOURCES_URL =
   process.env.SOURCES_URL ||
-  "https://cdn.jsdelivr.net/gh/mitchellh/zig-overlay@main/sources.json";
+  "https://raw.githubusercontent.com/mitchellh/zig-overlay/refs/heads/main/sources.json";
 
 const response = await fetch(SOURCES_URL);
 
